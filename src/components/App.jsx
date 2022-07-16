@@ -66,6 +66,7 @@ export const App = () => {
     setIsLoading(true);
     setPage(prevState => prevState + 1);
   };
+
   useEffect(() => {
     if (queue === '') {
       return;
@@ -118,14 +119,18 @@ export const App = () => {
 
     return;
   }, [page, queue, totalHits]);
+
   useEffect(() => {
     if (page > 1) {
-      window.scrollBy({
-        top: CARD_HEIGHT * 2,
-        behavior: 'smooth',
-      });
+      setTimeout(() => {
+        window.scrollBy({
+          top: CARD_HEIGHT * 2,
+          behavior: 'smooth',
+        });
+      }, 600);
     }
-  });
+  }, [page]);
+
   return (
     <AppBox>
       <SearchBar onSubmit={getRequest} />
