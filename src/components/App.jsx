@@ -53,14 +53,6 @@ export const App = () => {
     });
   };
 
-  // const timeout = () =>
-  //   setTimeout(() => {
-  //     window.scrollBy({
-  //       top: CARD_HEIGHT * 2,
-  //       behavior: 'smooth',
-  //     });
-  //   }, 400);
-
   const toggleModal = largeImg => {
     if (modalImg === '') {
       setModalHidden(false);
@@ -97,13 +89,17 @@ export const App = () => {
           };
           return data;
         });
+
         if (imagesData.totalHits !== 0 && totalHits === 0) {
           setTotalHits(imagesData.totalHits);
-          Notiflix.Notify.success(
+          return Notiflix.Notify.success(
             `Hooray! We found ${imagesData.totalHits} images.`,
             notiflixOptions
           );
-          return setHits(images);
+        }
+        if (page === 1) {
+          setHits(images);
+          return;
         } else {
           return setHits(prevState => [...prevState, ...images]);
         }
@@ -121,59 +117,6 @@ export const App = () => {
     fetchImagesData();
 
     return;
-    // axios
-    //   .get(URI, {
-    //     params: {
-    //       q: queue,
-    //       page: page,
-    //       key: API_KEY,
-    //       image_type: 'photo',
-    //       orientation: 'horizontal',
-    //       per_page: 12,
-    //     },
-    //   })
-    // .then(response => {
-    //   if (response.data.totalHits !== 0 && totalHits === 0) {
-    //     Notiflix.Notify.success(
-    //       `Hooray! We found ${response.data.totalHits} images.`,
-    //       notiflixOptions
-    //     );
-    //   }
-
-    //   if (hits.length < response.data.totalHits) {
-    //     let data = response.data.hits.map(item => {
-    //       let data = {
-    //         id: item.id,
-    //         webformatURL: item.webformatURL,
-    //         largeImageURL: item.largeImageURL,
-    //       };
-    //       return data;
-    //     });
-
-    //     return setHits(
-    //       prevState => [...prevState, ...data],
-    //     );
-    //   } else {
-    //     throw new Error('Oops');
-    //   }
-    // })
-    // .then(async () => {
-    //   if (hits.length > 0) {
-    //     timeout();
-    //   }
-    //   await clearTimeout(timeout);
-    // })
-    // .catch(error => {
-    //   console.log(error);
-    //   return Notiflix.Notify.failure(
-    //     'Oops something goes wrong, change your request or refresh page',
-    //     notiflixOptions
-    //   );
-    // })
-    // .then(() => {
-    //   setIsLoading(false);
-    //   setLoaderHidden(true);
-    // });
   }, [page, queue, totalHits]);
   useEffect(() => {
     if (page > 1) {
@@ -183,69 +126,6 @@ export const App = () => {
       });
     }
   });
-
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (
-  //     prevState.page !== this.state.page ||
-  //     prevState.queue !== this.state.queue
-  //   ) {
-  //     this.setState({ loaderHidden: false });
-  //     axios
-  //       .get(URI, {
-  //         params: {
-  //           q: this.state.queue,
-  //           page: this.state.page,
-  //           key: API_KEY,
-  //           image_type: 'photo',
-  //           orientation: 'horizontal',
-  //           per_page: 12,
-  //         },
-  //       })
-  //       .then(response => {
-  //         if (response.data.totalHits !== 0 && this.state.totalHits === 0) {
-  //           Notiflix.Notify.success(
-  //             `Hooray! We found ${response.data.totalHits} images.`,
-  //             notiflixOptions
-  //           );
-  //         }
-
-  //         if (this.state.hits.length < response.data.totalHits) {
-  //           let data = response.data.hits.map(item => {
-  //             let data = {
-  //               id: item.id,
-  //               webformatURL: item.webformatURL,
-  //               largeImageURL: item.largeImageURL,
-  //             };
-  //             return data;
-  //           });
-  //           this.setState(prevState => ({
-  //             totalHits: response.data.totalHits,
-  //             hits: [...prevState.hits, ...data],
-  //           }));
-  //         } else {
-  //           throw new Error('Oops');
-  //         }
-  //       })
-  //       .then(async () => {
-  //         if (this.state.hits.length > 0) {
-  //           this.timeout();
-  //         }
-  //         await clearTimeout(this.timeout);
-  //       })
-  //       .catch(error => {
-  //         console.log(error);
-  //         return Notiflix.Notify.failure(
-  //           'Oops something goes wrong, change your request or refresh page',
-  //           notiflixOptions
-  //         );
-  //       })
-  //       .then(() => {
-  //         this.setState({ loaderHidden: true, isLoading: false });
-  //       });
-  //   }
-  //   // return;
-  // }
-
   return (
     <AppBox>
       <SearchBar onSubmit={getRequest} />
