@@ -10,7 +10,6 @@ export const Modal = ({ onClose, children }) => {
     e => {
       if (e.code === 'Escape' || e.target.nodeName === 'DIV') {
         onClose();
-        console.log('object');
       }
     },
     [onClose]
